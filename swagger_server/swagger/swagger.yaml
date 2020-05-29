@@ -1,0 +1,302 @@
+---
+swagger: "2.0"
+info:
+  description: "VMs manager at peak hours"
+  version: "1.0.0"
+  title: "Openstack VMs manager"
+host: "172.16.3.42:8080"
+basePath: "/v1"
+tags:
+- name: "images"
+  description: "Images collection"
+- name: "flavors"
+  description: "Flavors collection"
+- name: "networks"
+  description: "Networks collection"
+- name: "servers"
+  description: "Servers collection"
+- name: "schedules"
+  description: "Schedules collection"
+schemes:
+- "http"
+paths:
+  /images:
+    get:
+      tags:
+      - "images"
+      summary: "Get images"
+      description: "Get all images available in the system"
+      operationId: "get_images"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+      x-swagger-router-controller: "swagger_server.controllers.images_controller"
+  /flavors:
+    get:
+      tags:
+      - "flavors"
+      summary: "Get flavors"
+      description: "Get all flavors available in the system"
+      operationId: "get_flavors"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+      x-swagger-router-controller: "swagger_server.controllers.flavors_controller"
+  /networks:
+    get:
+      tags:
+      - "networks"
+      summary: "Get networks"
+      description: "Get all networks"
+      operationId: "get_networks"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+      x-swagger-router-controller: "swagger_server.controllers.networks_controller"
+  /servers:
+    get:
+      tags:
+      - "servers"
+      summary: "Get servers"
+      description: "Get all servers running in the system"
+      operationId: "get_servers"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+      x-swagger-router-controller: "swagger_server.controllers.servers_controller"
+    post:
+      tags:
+      - "servers"
+      summary: "Create new server"
+      description: ""
+      operationId: "servers_post"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/Server"
+      responses:
+        "201":
+          description: "Created"
+          schema:
+            $ref: "#/definitions/Server"
+        "400":
+          description: "Bad request"
+      x-swagger-router-controller: "swagger_server.controllers.servers_controller"
+  /schedules:
+    post:
+      tags:
+      - "schedules"
+      summary: "Create a new schedule"
+      description: ""
+      operationId: "add_schedule"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Schedule data"
+        required: true
+        schema:
+          $ref: "#/definitions/Schedule"
+      responses:
+        "405":
+          description: "Invalid input"
+      x-swagger-router-controller: "swagger_server.controllers.schedules_controller"
+    put:
+      tags:
+      - "schedules"
+      summary: "Update an existing schedule"
+      description: ""
+      operationId: "update_schedule"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/Schedule"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Employee not found"
+        "405":
+          description: "Validation exception"
+      x-swagger-router-controller: "swagger_server.controllers.schedules_controller"
+  /schedules/{scheduleId}:
+    get:
+      tags:
+      - "schedules"
+      summary: "Find schedule by ID"
+      description: "Returns a single schedule"
+      operationId: "get_schedule_by_id"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "scheduleId"
+        in: "path"
+        description: "ID of Schedule to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Schedule"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Schedule not found"
+      x-swagger-router-controller: "swagger_server.controllers.schedules_controller"
+    post:
+      tags:
+      - "schedules"
+      summary: "Updates an employee in the store with form data"
+      description: ""
+      operationId: "update_employee_with_form"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "scheduleId"
+        in: "path"
+        description: "ID of employe that needs to be updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "name"
+        in: "formData"
+        description: "Updated name of the employee"
+        required: false
+        type: "string"
+      - name: "status"
+        in: "formData"
+        description: "Updated status of the employee"
+        required: false
+        type: "string"
+      responses:
+        "405":
+          description: "Invalid input"
+      x-swagger-router-controller: "swagger_server.controllers.schedules_controller"
+    delete:
+      tags:
+      - "schedules"
+      summary: "Deletes an employee"
+      description: ""
+      operationId: "delete_employee"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "scheduleId"
+        in: "path"
+        description: "Employee id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Employee not found"
+      x-swagger-router-controller: "swagger_server.controllers.schedules_controller"
+definitions:
+  Schedule:
+    type: "object"
+    required:
+    - "image"
+    - "peak-start"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      peak-start:
+        type: "string"
+        example: "6:00pm"
+      peack-end:
+        type: "string"
+        example: "7:00pm"
+      flavor:
+        type: "string"
+        example: "standard"
+      image:
+        type: "string"
+        example: "cirros"
+    xml:
+      name: "Schedule"
+    example:
+      flavor: "standard"
+      image: "cirros"
+      peak-start: "6:00pm"
+      id: 0
+      peack-end: "7:00pm"
+  Server:
+    type: "object"
+    required:
+    - "flavor"
+    - "image"
+    - "name"
+    - "network"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        example: "test"
+      image:
+        type: "string"
+        example: "cirros"
+      flavor:
+        type: "string"
+        example: "basic"
+      network:
+        type: "string"
+        example: "internal"
+    xml:
+      name: "Server"
+    example:
+      flavor: "basic"
+      image: "cirros"
+      name: "test"
+      id: 0
+      network: "internal"
