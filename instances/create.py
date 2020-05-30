@@ -1,19 +1,20 @@
 import sys
-import subprocess
+import openstack
 
-try:
-    SERVER_NAME = 'mr-robot'
-    image = sys.argv[sys.argv.index('--image') + 1]
-    flavor = sys.argv[sys.argv.index('--flavor') + 1]
-    network = sys.argv[sys.argv.index('--network') + 1]
-    min = int(sys.argv[sys.argv.index('--count') + 1])
+conn = openstack.connect()
 
-    CMD = 'openstack server create --image {0} --flavor {1} --network {2} --min {3} --max {3} {4}'.format(image, flavor, network, min, SERVER_NAME)
+SERVER_NAME = 'mr-robot'
+IMAGE_NAME = sys.argv[sys.argv.index('--image') + 1]
+FLAVOR_NAME = sys.argv[sys.argv.index('--flavor') + 1]
+NETWORK_NAME = sys.argv[sys.argv.index('--network') + 1]
+COUNT = int(sys.argv[sys.argv.index('--count') + 1])
 
-    result = subprocess.check_output(CMD, shell=True)
-    print(CMD)
-    print(result)
+image = conn.compute.find_image(IMAGE_NAME)
+flavor = conn.compute.find_flavor(FLAVOR_NAME)
+network = conn.network.find_network(NETWORK_NAME)
 
-except:
-    print('python create.py --image <image> --flavor <flavor> --network <network> --count <count>')
-    exit(1)
+server = conn.compute.create_server(
+        name=SERVER_NAME, image_id=image.id, flavor_id=flavor.id,
+        networks=[{"uuid": network.id}], min_count=COUNT, max_count=COUNT)
+
+server = conn.compute.wait_for_server(server)

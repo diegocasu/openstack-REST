@@ -1,16 +1,9 @@
-import sys
-import subprocess
+import openstack
 
-try:
-    SERVER_NAME = 'mr-robot'
-    count = int(sys.argv[sys.argv.index('--count') + 1])
+conn = openstack.connect()
 
-    for i in range(1, count + 1):
-        CMD = 'openstack server delete {}'.format(SERVER_NAME + '-' + str(i))
-        result = subprocess.check_output(CMD, shell=True)
-        print(CMD)
-        print(result)
+SERVER_NAME = 'mr-robot'
 
-except:
-    print('python delete.py --count <count>')
-    exit(1)
+for server in conn.compute.servers(name=SERVER_NAME):
+    print(server.id)
+    conn.compute.delete_server(server)
