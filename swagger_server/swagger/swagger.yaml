@@ -155,11 +155,12 @@ definitions:
   Schedule:
     type: "object"
     required:
-    - "peak"
     - "server"
     properties:
-      peak:
-        $ref: "#/definitions/Schedule_peak"
+      peak_interval:
+        type: "object"
+        allOf:
+        - $ref: "#/definitions/PeakInterval"
       server:
         type: "object"
         allOf:
@@ -168,9 +169,19 @@ definitions:
       name: "Schedule"
     example:
       server: ""
-      peak:
-        start: "6:00"
-        end: "7:00"
+      peak_interval: ""
+  PeakInterval:
+    type: "object"
+    required:
+    - "end"
+    - "start"
+    properties:
+      start:
+        type: "string"
+        example: "6:00"
+      end:
+        type: "string"
+        example: "7:00"
   Server:
     type: "object"
     required:
@@ -197,18 +208,3 @@ definitions:
         example: 1
     xml:
       name: "Server"
-  Schedule_peak:
-    type: "object"
-    required:
-    - "end"
-    - "start"
-    properties:
-      start:
-        type: "string"
-        example: "6:00"
-      end:
-        type: "string"
-        example: "7:00"
-    example:
-      start: "6:00"
-      end: "7:00"

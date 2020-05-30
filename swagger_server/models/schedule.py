@@ -15,25 +15,25 @@ class Schedule(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, peak: SchedulePeak=None, server: object=None):  # noqa: E501
+    def __init__(self, peak_interval: object=None, server: object=None):  # noqa: E501
         """Schedule - a model defined in Swagger
 
-        :param peak: The peak of this Schedule.  # noqa: E501
-        :type peak: SchedulePeak
+        :param peak_interval: The peak_interval of this Schedule.  # noqa: E501
+        :type peak_interval: object
         :param server: The server of this Schedule.  # noqa: E501
         :type server: object
         """
         self.swagger_types = {
-            'peak': SchedulePeak,
+            'peak_interval': object,
             'server': object
         }
 
         self.attribute_map = {
-            'peak': 'peak',
+            'peak_interval': 'peak_interval',
             'server': 'server'
         }
 
-        self._peak = peak
+        self._peak_interval = peak_interval
         self._server = server
 
     @classmethod
@@ -48,27 +48,25 @@ class Schedule(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def peak(self) -> SchedulePeak:
-        """Gets the peak of this Schedule.
+    def peak_interval(self) -> object:
+        """Gets the peak_interval of this Schedule.
 
 
-        :return: The peak of this Schedule.
-        :rtype: SchedulePeak
+        :return: The peak_interval of this Schedule.
+        :rtype: object
         """
-        return self._peak
+        return self._peak_interval
 
-    @peak.setter
-    def peak(self, peak: SchedulePeak):
-        """Sets the peak of this Schedule.
+    @peak_interval.setter
+    def peak_interval(self, peak_interval: object):
+        """Sets the peak_interval of this Schedule.
 
 
-        :param peak: The peak of this Schedule.
-        :type peak: SchedulePeak
+        :param peak_interval: The peak_interval of this Schedule.
+        :type peak_interval: object
         """
-        if peak is None:
-            raise ValueError("Invalid value for `peak`, must not be `None`")  # noqa: E501
 
-        self._peak = peak
+        self._peak_interval = peak_interval
 
     @property
     def server(self) -> object:
