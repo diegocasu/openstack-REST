@@ -15,40 +15,35 @@ class Schedule(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id: int=None, peak_start: str=None, peack_end: str=None, flavor: str=None, image: str=None):  # noqa: E501
+    def __init__(self, id: int=None, peak_start: str=None, peak_end: str=None, image: str=None):  # noqa: E501
         """Schedule - a model defined in Swagger
 
         :param id: The id of this Schedule.  # noqa: E501
         :type id: int
         :param peak_start: The peak_start of this Schedule.  # noqa: E501
         :type peak_start: str
-        :param peack_end: The peack_end of this Schedule.  # noqa: E501
-        :type peack_end: str
-        :param flavor: The flavor of this Schedule.  # noqa: E501
-        :type flavor: str
+        :param peak_end: The peak_end of this Schedule.  # noqa: E501
+        :type peak_end: str
         :param image: The image of this Schedule.  # noqa: E501
         :type image: str
         """
         self.swagger_types = {
             'id': int,
             'peak_start': str,
-            'peack_end': str,
-            'flavor': str,
+            'peak_end': str,
             'image': str
         }
 
         self.attribute_map = {
             'id': 'id',
             'peak_start': 'peak-start',
-            'peack_end': 'peack-end',
-            'flavor': 'flavor',
+            'peak_end': 'peak-end',
             'image': 'image'
         }
 
         self._id = id
         self._peak_start = peak_start
-        self._peack_end = peack_end
-        self._flavor = flavor
+        self._peak_end = peak_end
         self._image = image
 
     @classmethod
@@ -107,46 +102,25 @@ class Schedule(Model):
         self._peak_start = peak_start
 
     @property
-    def peack_end(self) -> str:
-        """Gets the peack_end of this Schedule.
+    def peak_end(self) -> str:
+        """Gets the peak_end of this Schedule.
 
 
-        :return: The peack_end of this Schedule.
+        :return: The peak_end of this Schedule.
         :rtype: str
         """
-        return self._peack_end
+        return self._peak_end
 
-    @peack_end.setter
-    def peack_end(self, peack_end: str):
-        """Sets the peack_end of this Schedule.
+    @peak_end.setter
+    def peak_end(self, peak_end: str):
+        """Sets the peak_end of this Schedule.
 
 
-        :param peack_end: The peack_end of this Schedule.
-        :type peack_end: str
+        :param peak_end: The peak_end of this Schedule.
+        :type peak_end: str
         """
 
-        self._peack_end = peack_end
-
-    @property
-    def flavor(self) -> str:
-        """Gets the flavor of this Schedule.
-
-
-        :return: The flavor of this Schedule.
-        :rtype: str
-        """
-        return self._flavor
-
-    @flavor.setter
-    def flavor(self, flavor: str):
-        """Sets the flavor of this Schedule.
-
-
-        :param flavor: The flavor of this Schedule.
-        :type flavor: str
-        """
-
-        self._flavor = flavor
+        self._peak_end = peak_end
 
     @property
     def image(self) -> str:

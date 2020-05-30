@@ -26,10 +26,10 @@ class TestSchedulesController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_delete_employee(self):
-        """Test case for delete_employee
+    def test_delete_schedule(self):
+        """Test case for delete_schedule
 
-        Deletes an employee
+        Deletes a schedule
         """
         response = self.client.open(
             '/v1/schedules/{scheduleId}'.format(scheduleId=789),
@@ -45,35 +45,6 @@ class TestSchedulesController(BaseTestCase):
         response = self.client.open(
             '/v1/schedules/{scheduleId}'.format(scheduleId=789),
             method='GET')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
-
-    def test_update_employee_with_form(self):
-        """Test case for update_employee_with_form
-
-        Updates an employee in the store with form data
-        """
-        data = dict(name='name_example',
-                    status='status_example')
-        response = self.client.open(
-            '/v1/schedules/{scheduleId}'.format(scheduleId=789),
-            method='POST',
-            data=data,
-            content_type='application/x-www-form-urlencoded')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
-
-    def test_update_schedule(self):
-        """Test case for update_schedule
-
-        Update an existing schedule
-        """
-        body = Schedule()
-        response = self.client.open(
-            '/v1/schedules',
-            method='PUT',
-            data=json.dumps(body),
-            content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
