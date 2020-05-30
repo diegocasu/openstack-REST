@@ -32,7 +32,7 @@ class TestSchedulesController(BaseTestCase):
         Deletes a schedule
         """
         response = self.client.open(
-            '/v1/schedules/{scheduleId}'.format(scheduleId=789),
+            '/v1/schedules/{scheduleId}'.format(scheduleId='scheduleId_example'),
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -43,7 +43,7 @@ class TestSchedulesController(BaseTestCase):
         Find schedule by ID
         """
         response = self.client.open(
-            '/v1/schedules/{scheduleId}'.format(scheduleId=789),
+            '/v1/schedules/{scheduleId}'.format(scheduleId='scheduleId_example'),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))

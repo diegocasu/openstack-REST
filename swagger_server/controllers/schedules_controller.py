@@ -26,7 +26,7 @@ def delete_schedule(scheduleId):  # noqa: E501
      # noqa: E501
 
     :param scheduleId: Schedule ID to delete
-    :type scheduleId: int
+    :type scheduleId: str
 
     :rtype: None
     """
@@ -39,7 +39,7 @@ def get_schedule_by_id(scheduleId):  # noqa: E501
     Returns a single schedule # noqa: E501
 
     :param scheduleId: ID of Schedule to return
-    :type scheduleId: int
+    :type scheduleId: str
 
     :rtype: Schedule
     """

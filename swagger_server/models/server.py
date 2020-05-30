@@ -15,11 +15,9 @@ class Server(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id: int=None, name: str=None, image: str=None, flavor: str=None, network: str=None):  # noqa: E501
+    def __init__(self, name: str=None, image: str=None, flavor: str=None, network: str=None, count: int=None):  # noqa: E501
         """Server - a model defined in Swagger
 
-        :param id: The id of this Server.  # noqa: E501
-        :type id: int
         :param name: The name of this Server.  # noqa: E501
         :type name: str
         :param image: The image of this Server.  # noqa: E501
@@ -28,28 +26,30 @@ class Server(Model):
         :type flavor: str
         :param network: The network of this Server.  # noqa: E501
         :type network: str
+        :param count: The count of this Server.  # noqa: E501
+        :type count: int
         """
         self.swagger_types = {
-            'id': int,
             'name': str,
             'image': str,
             'flavor': str,
-            'network': str
+            'network': str,
+            'count': int
         }
 
         self.attribute_map = {
-            'id': 'id',
             'name': 'name',
             'image': 'image',
             'flavor': 'flavor',
-            'network': 'network'
+            'network': 'network',
+            'count': 'count'
         }
 
-        self._id = id
         self._name = name
         self._image = image
         self._flavor = flavor
         self._network = network
+        self._count = count
 
     @classmethod
     def from_dict(cls, dikt) -> 'Server':
@@ -61,27 +61,6 @@ class Server(Model):
         :rtype: Server
         """
         return util.deserialize_model(dikt, cls)
-
-    @property
-    def id(self) -> int:
-        """Gets the id of this Server.
-
-
-        :return: The id of this Server.
-        :rtype: int
-        """
-        return self._id
-
-    @id.setter
-    def id(self, id: int):
-        """Sets the id of this Server.
-
-
-        :param id: The id of this Server.
-        :type id: int
-        """
-
-        self._id = id
 
     @property
     def name(self) -> str:
@@ -101,8 +80,6 @@ class Server(Model):
         :param name: The name of this Server.
         :type name: str
         """
-        if name is None:
-            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
 
@@ -174,3 +151,26 @@ class Server(Model):
             raise ValueError("Invalid value for `network`, must not be `None`")  # noqa: E501
 
         self._network = network
+
+    @property
+    def count(self) -> int:
+        """Gets the count of this Server.
+
+
+        :return: The count of this Server.
+        :rtype: int
+        """
+        return self._count
+
+    @count.setter
+    def count(self, count: int):
+        """Sets the count of this Server.
+
+
+        :param count: The count of this Server.
+        :type count: int
+        """
+        if count is None:
+            raise ValueError("Invalid value for `count`, must not be `None`")  # noqa: E501
+
+        self._count = count

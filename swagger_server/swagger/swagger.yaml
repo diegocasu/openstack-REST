@@ -80,33 +80,6 @@ paths:
         "200":
           description: "OK"
       x-swagger-router-controller: "swagger_server.controllers.servers_controller"
-    post:
-      tags:
-      - "servers"
-      summary: "Create new server"
-      description: ""
-      operationId: "servers_post"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: ""
-        required: true
-        schema:
-          $ref: "#/definitions/Server"
-      responses:
-        "201":
-          description: "Created"
-          schema:
-            $ref: "#/definitions/Server"
-        "400":
-          description: "Bad request"
-      x-swagger-router-controller: "swagger_server.controllers.servers_controller"
   /schedules:
     post:
       tags:
@@ -130,8 +103,8 @@ paths:
       responses:
         "201":
           description: "Created"
-        "405":
-          description: "Invalid input"
+        "404":
+          description: "Bad request"
       x-swagger-router-controller: "swagger_server.controllers.schedules_controller"
   /schedules/{scheduleId}:
     get:
@@ -148,15 +121,12 @@ paths:
         in: "path"
         description: "ID of Schedule to return"
         required: true
-        type: "integer"
-        format: "int64"
+        type: "string"
       responses:
         "200":
-          description: "successful operation"
+          description: "OK"
           schema:
             $ref: "#/definitions/Schedule"
-        "400":
-          description: "Invalid ID supplied"
         "404":
           description: "Schedule not found"
       x-swagger-router-controller: "swagger_server.controllers.schedules_controller"
@@ -174,13 +144,10 @@ paths:
         in: "path"
         description: "Schedule ID to delete"
         required: true
-        type: "integer"
-        format: "int64"
+        type: "string"
       responses:
         "200":
           description: "Deleted"
-        "400":
-          description: "Invalid ID supplied"
         "404":
           description: "Schedule not found"
       x-swagger-router-controller: "swagger_server.controllers.schedules_controller"
@@ -188,56 +155,60 @@ definitions:
   Schedule:
     type: "object"
     required:
-    - "image"
-    - "peak-start"
+    - "peak"
+    - "server"
     properties:
-      id:
-        type: "integer"
-        format: "int64"
-      peak-start:
-        type: "string"
-        example: "6:00pm"
-      peak-end:
-        type: "string"
-        example: "7:00pm"
-      image:
-        type: "string"
-        example: "cirros"
+      peak:
+        $ref: "#/definitions/Schedule_peak"
+      server:
+        type: "object"
+        allOf:
+        - $ref: "#/definitions/Server"
     xml:
       name: "Schedule"
     example:
-      image: "cirros"
-      peak-start: "6:00pm"
-      id: 0
-      peak-end: "7:00pm"
+      server: ""
+      peak:
+        start: "6:00"
+        end: "7:00"
   Server:
     type: "object"
     required:
+    - "count"
     - "flavor"
     - "image"
-    - "name"
     - "network"
     properties:
-      id:
-        type: "integer"
-        format: "int64"
       name:
         type: "string"
         example: "test"
       image:
         type: "string"
-        example: "cirros"
+        example: "Cirros"
       flavor:
         type: "string"
         example: "basic"
       network:
         type: "string"
         example: "internal"
+      count:
+        type: "integer"
+        format: "int64"
+        example: 1
     xml:
       name: "Server"
+  Schedule_peak:
+    type: "object"
+    required:
+    - "end"
+    - "start"
+    properties:
+      start:
+        type: "string"
+        example: "6:00"
+      end:
+        type: "string"
+        example: "7:00"
     example:
-      flavor: "basic"
-      image: "cirros"
-      name: "test"
-      id: 0
-      network: "internal"
+      start: "6:00"
+      end: "7:00"

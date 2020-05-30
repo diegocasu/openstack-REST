@@ -15,36 +15,26 @@ class Schedule(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id: int=None, peak_start: str=None, peak_end: str=None, image: str=None):  # noqa: E501
+    def __init__(self, peak: SchedulePeak=None, server: object=None):  # noqa: E501
         """Schedule - a model defined in Swagger
 
-        :param id: The id of this Schedule.  # noqa: E501
-        :type id: int
-        :param peak_start: The peak_start of this Schedule.  # noqa: E501
-        :type peak_start: str
-        :param peak_end: The peak_end of this Schedule.  # noqa: E501
-        :type peak_end: str
-        :param image: The image of this Schedule.  # noqa: E501
-        :type image: str
+        :param peak: The peak of this Schedule.  # noqa: E501
+        :type peak: SchedulePeak
+        :param server: The server of this Schedule.  # noqa: E501
+        :type server: object
         """
         self.swagger_types = {
-            'id': int,
-            'peak_start': str,
-            'peak_end': str,
-            'image': str
+            'peak': SchedulePeak,
+            'server': object
         }
 
         self.attribute_map = {
-            'id': 'id',
-            'peak_start': 'peak-start',
-            'peak_end': 'peak-end',
-            'image': 'image'
+            'peak': 'peak',
+            'server': 'server'
         }
 
-        self._id = id
-        self._peak_start = peak_start
-        self._peak_end = peak_end
-        self._image = image
+        self._peak = peak
+        self._server = server
 
     @classmethod
     def from_dict(cls, dikt) -> 'Schedule':
@@ -58,89 +48,47 @@ class Schedule(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def id(self) -> int:
-        """Gets the id of this Schedule.
+    def peak(self) -> SchedulePeak:
+        """Gets the peak of this Schedule.
 
 
-        :return: The id of this Schedule.
-        :rtype: int
+        :return: The peak of this Schedule.
+        :rtype: SchedulePeak
         """
-        return self._id
+        return self._peak
 
-    @id.setter
-    def id(self, id: int):
-        """Sets the id of this Schedule.
+    @peak.setter
+    def peak(self, peak: SchedulePeak):
+        """Sets the peak of this Schedule.
 
 
-        :param id: The id of this Schedule.
-        :type id: int
+        :param peak: The peak of this Schedule.
+        :type peak: SchedulePeak
         """
+        if peak is None:
+            raise ValueError("Invalid value for `peak`, must not be `None`")  # noqa: E501
 
-        self._id = id
+        self._peak = peak
 
     @property
-    def peak_start(self) -> str:
-        """Gets the peak_start of this Schedule.
+    def server(self) -> object:
+        """Gets the server of this Schedule.
 
 
-        :return: The peak_start of this Schedule.
-        :rtype: str
+        :return: The server of this Schedule.
+        :rtype: object
         """
-        return self._peak_start
+        return self._server
 
-    @peak_start.setter
-    def peak_start(self, peak_start: str):
-        """Sets the peak_start of this Schedule.
+    @server.setter
+    def server(self, server: object):
+        """Sets the server of this Schedule.
 
 
-        :param peak_start: The peak_start of this Schedule.
-        :type peak_start: str
+        :param server: The server of this Schedule.
+        :type server: object
         """
-        if peak_start is None:
-            raise ValueError("Invalid value for `peak_start`, must not be `None`")  # noqa: E501
+        if server is None:
+            raise ValueError("Invalid value for `server`, must not be `None`")  # noqa: E501
 
-        self._peak_start = peak_start
-
-    @property
-    def peak_end(self) -> str:
-        """Gets the peak_end of this Schedule.
-
-
-        :return: The peak_end of this Schedule.
-        :rtype: str
-        """
-        return self._peak_end
-
-    @peak_end.setter
-    def peak_end(self, peak_end: str):
-        """Sets the peak_end of this Schedule.
-
-
-        :param peak_end: The peak_end of this Schedule.
-        :type peak_end: str
-        """
-
-        self._peak_end = peak_end
-
-    @property
-    def image(self) -> str:
-        """Gets the image of this Schedule.
-
-
-        :return: The image of this Schedule.
-        :rtype: str
-        """
-        return self._image
-
-    @image.setter
-    def image(self, image: str):
-        """Sets the image of this Schedule.
-
-
-        :param image: The image of this Schedule.
-        :type image: str
-        """
-        if image is None:
-            raise ValueError("Invalid value for `image`, must not be `None`")  # noqa: E501
-
-        self._image = image
+        self._server = server
