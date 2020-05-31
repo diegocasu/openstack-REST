@@ -72,7 +72,7 @@ def add_schedule(body):  # noqa: E501
 
             cron.write()
 
-            return ID
+            return ID, 201
                 
         except Exception as e:
             return str(e), 400
