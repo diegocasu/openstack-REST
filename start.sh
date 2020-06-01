@@ -3,6 +3,8 @@
 # Activate the authentication file
 source admin-openrc.sh
 
+# Add job for cron
+echo "* * * * * python /usr/src/app/cron/cron.py >> /usr/src/app/cron/cron.log" >> /etc/crontabs/root
 # Start cron deamon for running scheduled tasks
 crond
 

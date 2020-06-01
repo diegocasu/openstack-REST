@@ -9,7 +9,6 @@ from swagger_server import util
 from datetime import datetime
 import uuid
 import pickle
-import json
 
 import openstack
 
@@ -58,40 +57,22 @@ def add_schedule(body):  # noqa: E501
             if count <= 0:
                 return 'Count must be greater than 0', 400
 
-            ID = uuid.uuid1()
+            ID = str(uuid.uuid1())
             received_json['id'] = ID
+            received_json['peak_interval']['start'] = PEAK_START.strftime('%H:%M')
+            received_json['peak_interval']['end'] = PEAK_END.strftime('%H:%M')
 
             try:
                 database = pickle.load(open(SCHEDULE_DATABASE, 'rb'))
             except FileNotFoundError:
                 database = []
 
-            print(received_json)
             database.append(received_json)
-            print(database)
 
             try:
                 pickle.dump(database, open(SCHEDULE_DATABASE, 'wb'))
             except Exception:
-                return 'Unable to update database', 500
-
-            # Install task on crontab file
-#            cron = CronTab(user=True)
-#            ID = uuid.uuid1()
-#            CREATE_CMD = 'python /usr/src/app/instances/create.py --image {} --flavor {} --network {} --count {}'.format(image.name, flavor.name, network.name, count)
-#            DELETE_CMD = 'python /usr/src/app/instances/delete.py'
-
-            # Create VM task
-#            create = cron.new(command=CREATE_CMD, comment=str(ID))
-#            create.hour.on(PEAK_START.strftime('%H'))
-#            create.minute.on(PEAK_START.strftime('%M'))
-
-            # Delete VM task
-#            delete = cron.new(command=DELETE_CMD, comment=str(ID))
-#            delete.hour.on(PEAK_END.strftime('%H'))
-#            delete.minute.on(PEAK_END.strftime('%M'))
-
-#            cron.write()
+                return 'unable to update database', 500
 
             return ID, 201
 
@@ -108,7 +89,25 @@ def delete_schedule(scheduleId):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+
+    try:
+        database = pickle.load(open(SCHEDULE_DATABASE, 'rb'))
+    except FileNotFoundError:
+        return 'empty database', 404
+    
+    to_be_removed = list(filter(lambda d: d['id'] == scheduleId, database))
+
+    if not to_be_removed:
+        return 'No schedule found for {}'.format(scheduleId), 404
+
+    database.remove(to_be_removed[0])
+
+    try:
+        pickle.dump(database, open(SCHEDULE_DATABASE, 'wb'))
+    except:
+        return 'unable to update database', 500
+
+    return 'ok', 200
 
 
 def get_schedules():  # noqa: E501
