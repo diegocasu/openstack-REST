@@ -8,9 +8,12 @@ from swagger_server import util
 
 from datetime import datetime
 import uuid
+import pickle
+import json
 
-from crontab import CronTab
 import openstack
+
+SCHEDULE_DATABASE='schedule.pickle.db'
 
 def add_schedule(body):  # noqa: E501
     """Create a new schedule
@@ -23,7 +26,8 @@ def add_schedule(body):  # noqa: E501
     :rtype: None
     """
     if connexion.request.is_json:
-        body = Schedule.from_dict(connexion.request.get_json())  # noqa: E501
+        received_json = connexion.request.get_json()
+        body = Schedule.from_dict(received_json)
 
         conn = openstack.connect()
 
@@ -54,26 +58,43 @@ def add_schedule(body):  # noqa: E501
             if count <= 0:
                 return 'Count must be greater than 0', 400
 
-            # Install task on crontab file
-            cron = CronTab(user=True)
             ID = uuid.uuid1()
-            CREATE_CMD = 'python /usr/src/app/instances/create.py --image {} --flavor {} --network {} --count {}'.format(image.name, flavor.name, network.name, count)
-            DELETE_CMD = 'python /usr/src/app/instances/delete.py'
+            received_json['id'] = ID
+
+            try:
+                database = pickle.load(open(SCHEDULE_DATABASE, 'rb'))
+            except FileNotFoundError:
+                database = []
+
+            print(received_json)
+            database.append(received_json)
+            print(database)
+
+            try:
+                pickle.dump(database, open(SCHEDULE_DATABASE, 'wb'))
+            except Exception:
+                return 'Unable to update database', 500
+
+            # Install task on crontab file
+#            cron = CronTab(user=True)
+#            ID = uuid.uuid1()
+#            CREATE_CMD = 'python /usr/src/app/instances/create.py --image {} --flavor {} --network {} --count {}'.format(image.name, flavor.name, network.name, count)
+#            DELETE_CMD = 'python /usr/src/app/instances/delete.py'
 
             # Create VM task
-            create = cron.new(command=CREATE_CMD, comment=str(ID))
-            create.hour.on(PEAK_START.strftime('%H'))
-            create.minute.on(PEAK_START.strftime('%M'))
+#            create = cron.new(command=CREATE_CMD, comment=str(ID))
+#            create.hour.on(PEAK_START.strftime('%H'))
+#            create.minute.on(PEAK_START.strftime('%M'))
 
             # Delete VM task
-            delete = cron.new(command=DELETE_CMD, comment=str(ID))
-            delete.hour.on(PEAK_END.strftime('%H'))
-            delete.minute.on(PEAK_END.strftime('%M'))
+#            delete = cron.new(command=DELETE_CMD, comment=str(ID))
+#            delete.hour.on(PEAK_END.strftime('%H'))
+#            delete.minute.on(PEAK_END.strftime('%M'))
 
-            cron.write()
+#            cron.write()
 
             return ID, 201
-                
+
         except Exception as e:
             return str(e), 400
 
@@ -98,5 +119,12 @@ def get_schedules():  # noqa: E501
 
     :rtype: Schedule
     """
-    return 'do some magic!'
+
+    try:
+        database = pickle.load(open(SCHEDULE_DATABASE, 'rb'))
+    except FileNotFoundError:
+        return 'Empty database', 404
+
+    return database, 200
+
 
