@@ -37,13 +37,13 @@ class TestSchedulesController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_get_schedule_by_id(self):
-        """Test case for get_schedule_by_id
+    def test_get_schedules(self):
+        """Test case for get_schedules
 
-        Find schedule by ID
+        Get schedules
         """
         response = self.client.open(
-            '/v1/schedules/{scheduleId}'.format(scheduleId='scheduleId_example'),
+            '/v1/schedules',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))

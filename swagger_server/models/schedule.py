@@ -15,24 +15,29 @@ class Schedule(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, peak_interval: object=None, server: object=None):  # noqa: E501
+    def __init__(self, id: str=None, peak_interval: object=None, server: object=None):  # noqa: E501
         """Schedule - a model defined in Swagger
 
+        :param id: The id of this Schedule.  # noqa: E501
+        :type id: str
         :param peak_interval: The peak_interval of this Schedule.  # noqa: E501
         :type peak_interval: object
         :param server: The server of this Schedule.  # noqa: E501
         :type server: object
         """
         self.swagger_types = {
+            'id': str,
             'peak_interval': object,
             'server': object
         }
 
         self.attribute_map = {
+            'id': 'id',
             'peak_interval': 'peak_interval',
             'server': 'server'
         }
 
+        self._id = id
         self._peak_interval = peak_interval
         self._server = server
 
@@ -46,6 +51,27 @@ class Schedule(Model):
         :rtype: Schedule
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def id(self) -> str:
+        """Gets the id of this Schedule.
+
+
+        :return: The id of this Schedule.
+        :rtype: str
+        """
+        return self._id
+
+    @id.setter
+    def id(self, id: str):
+        """Sets the id of this Schedule.
+
+
+        :param id: The id of this Schedule.
+        :type id: str
+        """
+
+        self._id = id
 
     @property
     def peak_interval(self) -> object:
@@ -65,6 +91,8 @@ class Schedule(Model):
         :param peak_interval: The peak_interval of this Schedule.
         :type peak_interval: object
         """
+        if peak_interval is None:
+            raise ValueError("Invalid value for `peak_interval`, must not be `None`")  # noqa: E501
 
         self._peak_interval = peak_interval
 

@@ -28,12 +28,16 @@ paths:
       description: "Get all images available in the system"
       operationId: "get_images"
       produces:
-      - "application/xml"
       - "application/json"
       parameters: []
       responses:
         "200":
           description: "OK"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties: {}
       x-swagger-router-controller: "swagger_server.controllers.images_controller"
   /flavors:
     get:
@@ -43,12 +47,16 @@ paths:
       description: "Get all flavors available in the system"
       operationId: "get_flavors"
       produces:
-      - "application/xml"
       - "application/json"
       parameters: []
       responses:
         "200":
           description: "OK"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties: {}
       x-swagger-router-controller: "swagger_server.controllers.flavors_controller"
   /networks:
     get:
@@ -58,12 +66,16 @@ paths:
       description: "Get all networks"
       operationId: "get_networks"
       produces:
-      - "application/xml"
       - "application/json"
       parameters: []
       responses:
         "200":
           description: "OK"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties: {}
       x-swagger-router-controller: "swagger_server.controllers.networks_controller"
   /servers:
     get:
@@ -73,14 +85,33 @@ paths:
       description: "Get all servers running in the system"
       operationId: "get_servers"
       produces:
-      - "application/xml"
       - "application/json"
       parameters: []
       responses:
         "200":
           description: "OK"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties: {}
       x-swagger-router-controller: "swagger_server.controllers.servers_controller"
   /schedules:
+    get:
+      tags:
+      - "schedules"
+      summary: "Get schedules"
+      description: "Returns all schedules"
+      operationId: "get_schedules"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Schedule"
+      x-swagger-router-controller: "swagger_server.controllers.schedules_controller"
     post:
       tags:
       - "schedules"
@@ -89,10 +120,8 @@ paths:
       operationId: "add_schedule"
       consumes:
       - "application/json"
-      - "application/xml"
       produces:
-      - "application/xml"
-      - "application/json"
+      - "plain/text"
       parameters:
       - in: "body"
         name: "body"
@@ -103,33 +132,13 @@ paths:
       responses:
         "201":
           description: "Created"
-        "404":
-          description: "Bad request"
+          schema:
+            type: "string"
+            example: "34d72378-a3f0-11ea-8eb6-001dd8b7258f"
+        "400":
+          description: "Bad json format"
       x-swagger-router-controller: "swagger_server.controllers.schedules_controller"
   /schedules/{scheduleId}:
-    get:
-      tags:
-      - "schedules"
-      summary: "Find schedule by ID"
-      description: "Returns a single schedule"
-      operationId: "get_schedule_by_id"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "scheduleId"
-        in: "path"
-        description: "ID of Schedule to return"
-        required: true
-        type: "string"
-      responses:
-        "200":
-          description: "OK"
-          schema:
-            $ref: "#/definitions/Schedule"
-        "404":
-          description: "Schedule not found"
-      x-swagger-router-controller: "swagger_server.controllers.schedules_controller"
     delete:
       tags:
       - "schedules"
@@ -137,8 +146,7 @@ paths:
       description: ""
       operationId: "delete_schedule"
       produces:
-      - "application/xml"
-      - "application/json"
+      - "plain/text"
       parameters:
       - name: "scheduleId"
         in: "path"
@@ -155,8 +163,12 @@ definitions:
   Schedule:
     type: "object"
     required:
+    - "peak_interval"
     - "server"
     properties:
+      id:
+        type: "string"
+        example: "34d72378-a3f0-11ea-8eb6-001dd8b7258f"
       peak_interval:
         type: "object"
         allOf:
@@ -165,10 +177,9 @@ definitions:
         type: "object"
         allOf:
         - $ref: "#/definitions/Server"
-    xml:
-      name: "Schedule"
     example:
       server: ""
+      id: "34d72378-a3f0-11ea-8eb6-001dd8b7258f"
       peak_interval: ""
   PeakInterval:
     type: "object"
@@ -190,9 +201,6 @@ definitions:
     - "image"
     - "network"
     properties:
-      name:
-        type: "string"
-        example: "test"
       image:
         type: "string"
         example: "Cirros"
@@ -206,5 +214,3 @@ definitions:
         type: "integer"
         format: "int64"
         example: 1
-    xml:
-      name: "Server"

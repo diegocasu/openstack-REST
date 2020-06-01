@@ -90,18 +90,13 @@ def delete_schedule(scheduleId):  # noqa: E501
     return 'do some magic!'
 
 
-def get_schedule_by_id(scheduleId):  # noqa: E501
-    """Find schedule by ID
+def get_schedules():  # noqa: E501
+    """Get schedules
 
-    Returns a single schedule # noqa: E501
+    Returns all schedules # noqa: E501
 
-    :param scheduleId: ID of Schedule to return
-    :type scheduleId: str
 
     :rtype: Schedule
     """
+    return 'do some magic!'
 
-    cron = CronTab(user=True)
-    jobs = [job for job in cron.find_comment(scheduleId)]
-
-    return str(jobs)

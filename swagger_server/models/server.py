@@ -15,11 +15,9 @@ class Server(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, name: str=None, image: str=None, flavor: str=None, network: str=None, count: int=None):  # noqa: E501
+    def __init__(self, image: str=None, flavor: str=None, network: str=None, count: int=None):  # noqa: E501
         """Server - a model defined in Swagger
 
-        :param name: The name of this Server.  # noqa: E501
-        :type name: str
         :param image: The image of this Server.  # noqa: E501
         :type image: str
         :param flavor: The flavor of this Server.  # noqa: E501
@@ -30,7 +28,6 @@ class Server(Model):
         :type count: int
         """
         self.swagger_types = {
-            'name': str,
             'image': str,
             'flavor': str,
             'network': str,
@@ -38,14 +35,12 @@ class Server(Model):
         }
 
         self.attribute_map = {
-            'name': 'name',
             'image': 'image',
             'flavor': 'flavor',
             'network': 'network',
             'count': 'count'
         }
 
-        self._name = name
         self._image = image
         self._flavor = flavor
         self._network = network
@@ -61,27 +56,6 @@ class Server(Model):
         :rtype: Server
         """
         return util.deserialize_model(dikt, cls)
-
-    @property
-    def name(self) -> str:
-        """Gets the name of this Server.
-
-
-        :return: The name of this Server.
-        :rtype: str
-        """
-        return self._name
-
-    @name.setter
-    def name(self, name: str):
-        """Sets the name of this Server.
-
-
-        :param name: The name of this Server.
-        :type name: str
-        """
-
-        self._name = name
 
     @property
     def image(self) -> str:
