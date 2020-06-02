@@ -28,6 +28,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label for="timezone">Timezone</label>
+                                    <select class="custom-select" name="timezone" id="timezone">
+                                        <option value=""></option>
+                                        {% for timezone in timezones %}
+                                        <option value="{{ timezone }}">{{ timezone }}:00</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label for="image">Image</label>
                                     <select class="custom-select" name="image" id="image">
                                         <option value=""></option>
@@ -83,8 +92,8 @@
             <tbody>
             {% for schedule in schedules %}
                 <tr>
-                    <td class="align-middle">{{ schedule['peak_interval']['start'] }}</td>
-                    <td class="align-middle">{{ schedule['peak_interval']['end'] }}</td>
+                    <td class="align-middle">{{ schedule['peak_interval']['start'] }} UTC</td>
+                    <td class="align-middle">{{ schedule['peak_interval']['end'] }} UTC</td>
                     <td class="align-middle">{{ schedule['server']['image'] }}</td>
                     <td class="align-middle">{{ schedule['server']['flavor'] }}</td>
                     <td class="align-middle">{{ schedule['server']['network'] }}</td>
