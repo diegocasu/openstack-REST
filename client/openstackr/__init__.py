@@ -10,8 +10,8 @@ def create_app():
         CONTROLLER_PORT='8080'
     )
 
-    from . import images, schedules
-    app.register_blueprint(images.bp)
+    from . import index, schedules
+    app.register_blueprint(index.bp)
     app.register_blueprint(schedules.bp)
 
     return app
