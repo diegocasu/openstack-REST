@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="mt-3">
+        <div class="d-flex">
+            <div class="flex-grow-1"><h2>Schedules</h2></div>
+            <div class="align-self-center"><button type="button" class="btn btn-sm btn-light border" data-toggle="modal" data-target="#createSchedule">Create schedule</button></div>
+            <div class="modal fade" id="createSchedule" tabindex="-1" role="dialog" aria-labelledby="createScheduleLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="{{ url_for('schedules.index') }}" method="post">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="createScheduleLabel">Create schedule</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-row">
+                                    <div class="form-group col">
+                                        <label for="peak-start">Peak start</label>
+                                        <input type="time" class="form-control" name="peak_start" id="peak-start" placeholder="HH:mm">
+                                    </div>
+                                    <div class="form-group col">
+                                        <label for="peak-end">Peak end</label>
+                                        <input type="time" class="form-control" name="peak_end" id="peak-end" placeholder="HH:mm">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="image">Image</label>
+                                    <select class="custom-select" name="image" id="image">
+                                        <option value=""></option>
+                                        {% for image in images %}
+                                        <option value="{{ image.name }}">{{ image.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="flavor">Flavor</label>
+                                    <select class="custom-select" name="flavor" id="flavor">
+                                        <option value=""></option>
+                                        {% for flavor in flavors %}
+                                        <option value="{{ flavor.name }}">{{ flavor.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="network">Network</label>
+                                    <select class="custom-select" name="network" id="network">
+                                        <option value=""></option>
+                                        {% for network in networks %}
+                                        <option value="{{ network.name }}">{{ network.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="count">Count</label>
+                                    <input type="text" class="form-control" name="count" id="count">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Peak start</th>
+                    <th scope="col">Peak end</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Flavor</th>
+                    <th scope="col">Network</th>
+                    <th scope="col">Count</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for schedule in schedules %}
+                <tr>
+                    <td class="align-middle">{{ schedule['peak_interval']['start'] }}</td>
+                    <td class="align-middle">{{ schedule['peak_interval']['end'] }}</td>
+                    <td class="align-middle">{{ schedule['server']['image'] }}</td>
+                    <td class="align-middle">{{ schedule['server']['flavor'] }}</td>
+                    <td class="align-middle">{{ schedule['server']['network'] }}</td>
+                    <td class="align-middle">{{ schedule['server']['count'] }}</td>
+                    <td class="text-right align-middle"><a href="{{ url_for('schedules.delete', scheduleId=schedule['id']) }}" class="btn btn-danger btn-sm">Delete</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
