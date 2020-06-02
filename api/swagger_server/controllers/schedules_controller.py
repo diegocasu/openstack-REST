@@ -12,7 +12,7 @@ import pickle
 
 import openstack
 
-SCHEDULE_DATABASE='schedule.pickle.db'
+SCHEDULE_DATABASE='data/schedule.pickle.db'
 
 def add_schedule(body):  # noqa: E501
     """Create a new schedule
@@ -94,7 +94,7 @@ def delete_schedule(scheduleId):  # noqa: E501
         database = pickle.load(open(SCHEDULE_DATABASE, 'rb'))
     except FileNotFoundError:
         return 'empty database', 404
-    
+
     to_be_removed = list(filter(lambda d: d['id'] == scheduleId, database))
 
     if not to_be_removed:

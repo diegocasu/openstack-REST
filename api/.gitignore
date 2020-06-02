@@ -60,8 +60,9 @@ docs/_build/
 # PyBuilder
 target/
 
-#Ipython Notebook
+# Ipython Notebook
 .ipynb_checkpoints
 
-schedule.pickle.db
+# Data volume directory
+data/
 

@@ -3,7 +3,7 @@ import pickle
 from datetime import datetime
 
 SERVER_NAME = 'mr-robot'
-SCHEDULE_DATABASE = '/usr/src/app/schedule.pickle.db'
+SCHEDULE_DATABASE = '/usr/src/app/data/schedule.pickle.db'
 
 current_time_string = (datetime.now()).strftime('%H:%M')
 try:
@@ -27,7 +27,7 @@ for index, schedule in enumerate(database):
         image = conn.compute.find_image(IMAGE_NAME)
         flavor = conn.compute.find_flavor(FLAVOR_NAME)
         network = conn.network.find_network(NETWORK_NAME)
-        
+
         ids = []
         for i in range(COUNT):
             server = conn.compute.create_server(
@@ -36,12 +36,12 @@ for index, schedule in enumerate(database):
 
             server = conn.compute.wait_for_server(server)
             ids.append(server.id)
-            
+
         schedule['server']['ids'] = ids
         database[index] = schedule
 
         print(database)
-        
+
         try:
             pickle.dump(database, open(SCHEDULE_DATABASE, 'wb'))
         except:
