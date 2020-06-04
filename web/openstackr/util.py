@@ -1,5 +1,6 @@
 from flask import current_app
 import requests
+from datetime import timedelta
 
 
 def get_resource(resource):
@@ -28,3 +29,11 @@ def delete_resource(resource, id):
         return False
 
     return True
+
+def convert_to_utc(localtime, timezone):
+    delta = timedelta(hours=timezone)
+    return localtime - delta
+
+def convert_from_utc(utctime, timezone):
+    delta = timedelta(hours=timezone)
+    return utctime + delta
