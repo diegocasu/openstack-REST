@@ -20,11 +20,11 @@
                                 <div class="form-row">
                                     <div class="form-group col">
                                         <label for="peak-start">Peak start</label>
-                                        <input type="time" class="form-control" name="peak_start" id="peak-start" placeholder="HH:mm">
+                                        <input type="time" class="form-control" name="peak_start" id="peak-start" placeholder="HH:mm" {% if form.peak_start.data %}value="{{ form.peak_start.data.strftime('%H:%M') }}"{% endif %}>
                                     </div>
                                     <div class="form-group col">
                                         <label for="peak-end">Peak end</label>
-                                        <input type="time" class="form-control" name="peak_end" id="peak-end" placeholder="HH:mm">
+                                        <input type="time" class="form-control" name="peak_end" id="peak-end" placeholder="HH:mm" {% if form.peak_end.data %}value="{{ form.peak_end.data.strftime('%H:%M') }}"{% endif %}>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -32,7 +32,7 @@
                                     <select class="custom-select" name="timezone" id="timezone">
                                         <option value=""></option>
                                         {% for timezone in timezones %}
-                                        <option value="{{ timezone }}">{{ timezone }}:00</option>
+                                        <option value="{{ timezone }}" {% if timezone == form.timezone.data %}selected{% endif %}>{{ timezone }}:00</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -41,7 +41,7 @@
                                     <select class="custom-select" name="image" id="image">
                                         <option value=""></option>
                                         {% for image in images %}
-                                        <option value="{{ image.name }}">{{ image.name }}</option>
+                                        <option value="{{ image.name }}" {% if image.name == form.image.data %}selected{% endif %}>{{ image.name }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -50,7 +50,7 @@
                                     <select class="custom-select" name="flavor" id="flavor">
                                         <option value=""></option>
                                         {% for flavor in flavors %}
-                                        <option value="{{ flavor.name }}">{{ flavor.name }}</option>
+                                        <option value="{{ flavor.name }}" {% if flavor.name == form.flavor.data %}selected{% endif %}>{{ flavor.name }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -59,13 +59,13 @@
                                     <select class="custom-select" name="network" id="network">
                                         <option value=""></option>
                                         {% for network in networks %}
-                                        <option value="{{ network.name }}">{{ network.name }}</option>
+                                        <option value="{{ network.name }}" {% if network.name == form.network.data %}selected{% endif %}>{{ network.name }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="count">Count</label>
-                                    <input type="text" class="form-control" name="count" id="count">
+                                    <input type="text" class="form-control" name="count" id="count" placeholder="es. 1" {% if form.count.data %}value="{{ form.count.data }}"{% endif %}>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -77,32 +77,47 @@
                 </div>
             </div>
         </div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Peak start</th>
-                    <th scope="col">Peak end</th>
-                    <th scope="col">Image</th>
-                    <th scope="col">Flavor</th>
-                    <th scope="col">Network</th>
-                    <th scope="col">Count</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for schedule in schedules %}
-                <tr>
-                    <td class="align-middle">{{ schedule['peak_interval']['start'] }} UTC</td>
-                    <td class="align-middle">{{ schedule['peak_interval']['end'] }} UTC</td>
-                    <td class="align-middle">{{ schedule['server']['image'] }}</td>
-                    <td class="align-middle">{{ schedule['server']['flavor'] }}</td>
-                    <td class="align-middle">{{ schedule['server']['network'] }}</td>
-                    <td class="align-middle">{{ schedule['server']['count'] }}</td>
-                    <td class="text-right align-middle"><a href="{{ url_for('schedules.delete', scheduleId=schedule['id']) }}" class="btn btn-danger btn-sm">Delete</a></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Peak start</th>
+                        <th scope="col">Peak end</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Flavor</th>
+                        <th scope="col">Network</th>
+                        <th scope="col">Count</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for schedule in schedules %}
+                    <tr>
+                        <td class="align-middle">{{ schedule['peak_interval']['start'] }} UTC</td>
+                        <td class="align-middle">{{ schedule['peak_interval']['end'] }} UTC</td>
+                        <td class="align-middle">{{ schedule['server']['image'] }}</td>
+                        <td class="align-middle">{{ schedule['server']['flavor'] }}</td>
+                        <td class="align-middle">{{ schedule['server']['network'] }}</td>
+                        <td class="align-middle">{{ schedule['server']['count'] }}</td>
+                        <td class="align-middle">
+                            {% if not schedule['server']['ids'] %}
+                                <span class="badge badge-secondary">Off</span>
+                            {% elif schedule['server']['ids']|length == schedule['server']['count'] %}
+                                <span class="badge badge-success">Active</span>
+                            {% else %}
+                                <span class="badge badge-warning">Warning</span>
+                            {% endif %}
+                            </td>
+                        <td class="text-right align-middle"><a href="{{ url_for('schedules.delete', scheduleId=schedule['id']) }}" class="btn btn-danger btn-sm">Delete</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if not schedules %}
+                <p class="text-center">No schedules found</p>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

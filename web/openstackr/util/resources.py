@@ -1,6 +1,5 @@
 from flask import current_app
 import requests
-from datetime import timedelta
 
 
 def get_resource(resource):
@@ -21,6 +20,7 @@ def post_resource(resource, data):
 
     return resp.text
 
+
 def delete_resource(resource, id):
     url = 'http://{}:{}/v1/{}/{}'.format(current_app.config['CONTROLLER_IP'], current_app.config['CONTROLLER_PORT'],
                                       resource, id)
@@ -29,11 +29,3 @@ def delete_resource(resource, id):
         return False
 
     return True
-
-def convert_to_utc(localtime, timezone):
-    delta = timedelta(hours=timezone)
-    return localtime - delta
-
-def convert_from_utc(utctime, timezone):
-    delta = timedelta(hours=timezone)
-    return utctime + delta

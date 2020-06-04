@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from openstackr.util import get_resource, post_resource, delete_resource, convert_to_utc, convert_from_utc
+from .forms.schedule import ScheduleForm
+from .util.resources import get_resource, post_resource, delete_resource
+from .util.timezone import convert_to_utc
 from datetime import datetime
 
 bp = Blueprint('schedules', __name__, url_prefix='/schedules')
@@ -11,81 +13,40 @@ def index():
     images = get_resource('images')
     flavors = get_resource('flavors')
     networks = get_resource('networks')
-
     timezones = [i for i in range(-12, 13)]
 
+    form = ScheduleForm(request.form)
     if request.method == 'POST':
-        peak_start = request.form['peak_start']
-        peak_end = request.form['peak_end']
-        timezone = int(request.form['timezone'])
-        image = request.form['image']
-        flavor = request.form['flavor']
-        network = request.form['network']
-        count = request.form['count']
+        if form.validate():
 
-        if not peak_start:
-            flash('Please enter the peak start', 'error')
-            return render_template('schedules/index.html',
-                                   schedules=schedules, images=images, flavors=flavors, networks=networks, timezones=timezones)
+            peak_start_utc_time = convert_to_utc(datetime.strptime(form.peak_start.data.strftime('%H:%M'), '%H:%M'), form.timezone.data)
+            peak_end_utc_time = convert_to_utc(datetime.strptime(form.peak_end.data.strftime('%H:%M'), '%H:%M'), form.timezone.data)
 
-        if not peak_end:
-            flash('Please enter the peak end', 'error')
-            return render_template('schedules/index.html',
-                                   schedules=schedules, images=images, flavors=flavors, networks=networks, timezones=timezones)
-
-        if not image:
-            flash('Please select an image', 'error')
-            return render_template('schedules/index.html',
-                                   schedules=schedules, images=images, flavors=flavors, networks=networks, timezones=timezones)
-
-        if not flavor:
-            flash('Please select a flavor', 'error')
-            return render_template('schedules/index.html',
-                                   schedules=schedules, images=images, flavors=flavors, networks=networks, timezones=timezones)
-
-        if not network:
-            flash('Please select a network', 'error')
-            return render_template('schedules/index.html',
-                                   schedules=schedules, images=images, flavors=flavors, networks=networks, timezones=timezones)
-
-        if not count:
-            flash('Please enter the number of instances to run during the peak', 'error')
-            return render_template('schedules/index.html',
-                                   schedules=schedules, images=images, flavors=flavors, networks=networks, timezones=timezones)
-
-        try:
-            count = int(count)
-        except ValueError:
-            flash('Count must be a digit', 'error')
-            return render_template('schedules/index.html',
-                                   schedules=schedules, images=images, flavors=flavors, networks=networks, timezones=timezones)
-
-        peak_start_utc_time = convert_to_utc(datetime.strptime(peak_start, '%H:%M'), timezone)
-        peak_end_utc_time = convert_to_utc(datetime.strptime(peak_end, '%H:%M'), timezone)
-
-        data = {
-            'peak_interval': {
-                'start': peak_start_utc_time.strftime('%H:%M'),
-                'end': peak_end_utc_time.strftime('%H:%M')
-            },
-            'server': {
-                'image': image,
-                'flavor': flavor,
-                'network': network,
-                'count': count
+            data = {
+                'peak_interval': {
+                    'start': peak_start_utc_time.strftime('%H:%M'),
+                    'end': peak_end_utc_time.strftime('%H:%M')
+                },
+                'server': {
+                    'image': form.image.data,
+                    'flavor': form.flavor.data,
+                    'network': form.network.data,
+                    'count': form.count.data
+                }
             }
-        }
 
-        schedule = post_resource('schedules', data)
+            schedule = post_resource('schedules', data)
 
-        if schedule is None:
-            flash('Something went wrong. Please try later.', 'error')
+            if schedule is None:
+                flash('Something went wrong. Please try later.', 'error')
+            else:
+                flash('Schedule successfully created: {}'.format(schedule), 'success')
+                return redirect(url_for('schedules.index'))
         else:
-            flash('Schedule successfully created: {}'.format(schedule), 'success')
-            return redirect(url_for('schedules.index'))
+            flash(next(iter(form.errors.values()))[0], 'error')
 
     return render_template('schedules/index.html',
-                           schedules=schedules, images=images, flavors=flavors, networks=networks, timezones=timezones)
+                           schedules=schedules, images=images, flavors=flavors, networks=networks, timezones=timezones, form=form)
 
 
 @bp.route('/<string:scheduleId>')
