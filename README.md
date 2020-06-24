@@ -1,6 +1,6 @@
 # OpenStack REST
 
-This is a project developed for the Cloud Computing course of Master Degree in Computer Engineering.
+This is a project developed for the Cloud Computing course of MSc. in Computer Engineering.
 
 ## Requirements
 
@@ -9,9 +9,9 @@ The following functionalities must be implemented:
 
 - At initialization, the application should create two new flavors on the platform, one _standard_ flavor and a _large_ flavor with more resources;
 - At scheduled times, the application should trigger the creation of new VMs, based on an existing image;
-- At the end of the scheduled peak period, the application should destroy the additional VMs.
+- At the end of the scheduled peak period, the application should kill the additional VMs.
 
-In order to allow system administrator to schedule for the creation of new VMs, the application must expose a REST interface to schedule the peak period and select the flavor and the image for the VMs to be created.
+In order to allow system administrator to schedule for the creation of new VMs, the application must expose a REST interface to schedule for the peak periods. It should also enable the user to select the flavor and the image for the VMs to be created.
 
 ## Repository
 
@@ -31,21 +31,21 @@ The API server communicates with the OpenStack instance through the [openstacksd
 - `POST /schedules`: creates a new schedule
 - `DELETE /schedules/<scheduleId>`: deletes the schedule identified by `scheduleId`
 
-It has been implemented using [Swagger](https://swagger.io).
+It is implemented by using [Swagger](https://swagger.io).
 
 ## Web server
 
-The web server offers a GUI for managing the creation and deletion of schedules interacting with the API server. It has been implemented using [Flask](https://flask.palletsprojects.com/en/1.1.x/).
+The web server offers a GUI for managing schedules. Specifically, It is used for the creation and deletion of schedules by interacting with the API server. It is implemented using [Flask](https://flask.palletsprojects.com/en/1.1.x/).
 
 ## Usage
 
-The deployment of both services can be done by:
+Both services can be deployed by:
 
 ```bash
 docker-compose up
 ```
 
-which starts the API service on port `8080` and the web serice on port `5000`.
+It starts the API service on port `8080` and the web serice on port `5000`.
 
 ## Contributors
 F. Barbarulo, D. Casu, B.T. Gurmesa, G.B. Rolandi 
