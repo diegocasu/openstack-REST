@@ -4,7 +4,10 @@
 source admin-openrc.sh
 
 # Add job for cron
-echo "* * * * * python /usr/src/app/cron/cron.py >> /usr/src/app/cron/cron.log" >> /etc/crontabs/root
+exists=$(crontab -l | grep cron.py)
+if [ -z $exists ]; then
+	echo "* * * * * python /usr/src/app/cron/cron.py >> /usr/src/app/cron/cron.log" >> /etc/crontabs/root
+fi
 # Start cron deamon for running scheduled tasks
 crond
 
