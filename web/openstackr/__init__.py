@@ -6,7 +6,7 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        CONTROLLER_IP='172.16.3.42',
+        CONTROLLER_IP='openstackrest_api_1',
         CONTROLLER_PORT='8080'
     )
 

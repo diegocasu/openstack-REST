@@ -4,7 +4,7 @@ info:
   description: "VMs manager at peak hours"
   version: "1.0.0"
   title: "Openstack VMs manager"
-host: "172.16.3.42:8080"
+host: "127.0.0.1:8080"
 basePath: "/v1"
 tags:
 - name: "images"

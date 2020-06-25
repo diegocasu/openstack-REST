@@ -45,7 +45,14 @@ Both services can be deployed by:
 docker-compose up
 ```
 
-It starts the API service on port `8080` and the web serice on port `5000`.
+It starts the API service on port `8080` and the web service on port `8000`.
+
+These ports can also be filtered from external access and accessed through an ssh tunnel using the following commands:
+```bash
+ssh ubuntu@131.114.137.91 -L 8000:127.0.0.1:8000 -N
+ssh ubuntu@131.114.137.91 -L 8080:127.0.0.1:8080 -N
+ssh ubuntu@131.114.137.91 -L 80:127.0.0.1:80 -N
+```
 
 ## Contributors
 F. Barbarulo, D. Casu, B.T. Gurmesa, G.B. Rolandi 

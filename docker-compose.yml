@@ -9,4 +9,4 @@ services:
   web:
     build: web
     ports:
-    - "5000:5000"
+    - "8000:5000"
