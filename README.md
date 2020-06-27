@@ -8,7 +8,7 @@ The application must allow to schedule the automatic creation of an additional s
 The following functionalities must be implemented:
 
 - At initialization, the application should create two new flavors on the platform, one _standard_ flavor and a _large_ flavor with more resources;
-- At scheduled times, the application should trigger the creation of new VMs, based on an existing image;
+- At scheduled times, the application should trigger the creation of new VMs based on one of the two falvours and an existing image;
 - At the end of the scheduled peak period, the application should kill the additional VMs.
 
 In order to allow system administrator to schedule for the creation of new VMs, the application must expose a REST interface to schedule for the peak periods. It should also enable the user to select the flavor and the image for the VMs to be created.
