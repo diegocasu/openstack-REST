@@ -31,7 +31,7 @@ The API server communicates with the OpenStack instance through the [openstacksd
 - `POST /schedules`: creates a new schedule
 - `DELETE /schedules/<scheduleId>`: deletes the schedule identified by `scheduleId`
 
-It is implemented by using [Swagger](https://swagger.io).
+The APIs have been designed using [Swagger](https://swagger.io), from which the python flask server is built.
 
 ## Web server
 
