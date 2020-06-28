@@ -14,5 +14,5 @@ def get_networks():  # noqa: E501
     :rtype: None
     """
     conn = openstack.connect()
-    networks = [network for network in conn.network.networks()]
+    networks = [network.to_dict() for network in conn.network.networks()]
     return networks

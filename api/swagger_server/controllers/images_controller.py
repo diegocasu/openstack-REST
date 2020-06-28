@@ -13,6 +13,6 @@ def get_images():  # noqa: E501
     :rtype: None
     """
     conn = openstack.connect()
-    images = [image for image in conn.compute.images()]
+    images = [image.to_dict() for image in conn.compute.images()]
 
     return images

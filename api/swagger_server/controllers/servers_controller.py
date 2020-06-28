@@ -15,5 +15,5 @@ def get_servers():  # noqa: E501
     :rtype: None
     """
     conn = openstack.connect()
-    servers = [server for server in conn.compute.servers()]
+    servers = [server.to_dict() for server in conn.compute.servers()]
     return servers

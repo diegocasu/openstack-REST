@@ -14,5 +14,5 @@ def get_flavors():  # noqa: E501
     :rtype: None
     """
     conn = openstack.connect()
-    flavors = [flavor for flavor in conn.compute.flavors()]
+    flavors = [flavor.to_dict() for flavor in conn.compute.flavors()]
     return flavors
