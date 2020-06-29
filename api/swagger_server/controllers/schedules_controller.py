@@ -72,7 +72,7 @@ def add_schedule(body):  # noqa: E501
             try:
                 pickle.dump(database, open(SCHEDULE_DATABASE, 'wb'))
             except Exception:
-                return 'unable to update database', 500
+                return 'Unable to update database', 500
 
             return ID, 201
 
@@ -93,7 +93,7 @@ def delete_schedule(scheduleId):  # noqa: E501
     try:
         database = pickle.load(open(SCHEDULE_DATABASE, 'rb'))
     except FileNotFoundError:
-        return 'empty database', 404
+        return 'Empty database', 404
 
     to_be_removed = list(filter(lambda d: d['id'] == scheduleId, database))
 
@@ -108,7 +108,7 @@ def delete_schedule(scheduleId):  # noqa: E501
     try:
         pickle.dump(database, open(SCHEDULE_DATABASE, 'wb'))
     except:
-        return 'unable to update database', 500
+        return 'Unable to update database', 500
 
     return 'ok', 200
 
