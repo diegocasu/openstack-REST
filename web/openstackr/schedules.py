@@ -51,9 +51,11 @@ def index():
 
 @bp.route('/<string:scheduleId>')
 def delete(scheduleId):
-    if delete_resource('schedules', scheduleId):
+    resp = delete_resource('schedules', scheduleId)
+
+    if resp['success']:
         flash('Schedule {} successfully removed'.format(scheduleId), 'success')
     else:
-        flash('Something went wrong. Please try later.', 'error')
+        flash('Something went wrong. Please try later. ERROR: ' + resp['text'].lower() + '.', 'error')
 
     return redirect(url_for('schedules.index'))

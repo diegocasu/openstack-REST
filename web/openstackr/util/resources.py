@@ -26,6 +26,6 @@ def delete_resource(resource, id):
                                       resource, id)
     resp = requests.delete(url)
     if resp.status_code != 200:
-        return False
+        return {'success': False, 'text': resp.text}
 
-    return True
+    return {'success': True, 'text': resp.text}
