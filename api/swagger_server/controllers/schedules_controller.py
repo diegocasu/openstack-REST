@@ -100,6 +100,9 @@ def delete_schedule(scheduleId):  # noqa: E501
     if not to_be_removed:
         return 'No schedule found for {}'.format(scheduleId), 404
 
+    if 'ids' in to_be_removed[0]['server']:
+        return 'The schedule is active', 403
+
     database.remove(to_be_removed[0])
 
     try:
