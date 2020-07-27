@@ -1,6 +1,6 @@
 # OpenStack REST
 
-This is a project developed for the Cloud Computing course of MSc. in Computer Engineering.
+Project for the Cloud Computing course of the Master of Science in Computer Engineering, University of Pisa.
 
 ## Requirements
 
@@ -48,4 +48,7 @@ docker-compose up
 It starts the API service on port `8080` and the web service on port `8000`.
 
 ## Contributors
-F. Barbarulo, D. Casu, B.T. Gurmesa, G.B. Rolandi 
+[Francesco Barbarulo](https://github.com/francescobarbarulo)      
+[Diego Casu](https://github.com/diegocasu)      
+[Bruk Tekalgne Gurmesa](https://github.com/BrukT)      
+[Giovan Battista Rolandi](https://github.com/giomba)      
